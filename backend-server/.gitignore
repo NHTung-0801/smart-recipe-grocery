@@ -1,0 +1,25 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments (CỰC KỲ QUAN TRỌNG: Không up thư mục venv)
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables (BẮT BUỘC: Nơi chứa Database URL, API Key Gemini)
+.env
+
+# Database local (Nếu bạn dùng SQLite để test)
+*.db
+*.sqlite3
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Docker logs
+.docker/
