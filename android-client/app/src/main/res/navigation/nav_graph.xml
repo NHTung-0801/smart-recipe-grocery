@@ -1,40 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/mainActivity">
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.smartrecipe.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
-    <fragment android:id="@+id/placeholder" />
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipeListFragment">
+
     <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.example.smartrecipe.BlankFragment"
-        android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
-    <navigation android:id="@+id/navigation4"
-        app:startDestination="@id/navigation3">
-        <navigation
-            android:id="@+id/navigation3"
-            app:startDestination="@id/navigation2">
-            <navigation
-                android:id="@+id/navigation2"
-                app:startDestination="@id/navigation">
-                <navigation
-                    android:id="@+id/navigation"
-                    app:startDestination="@id/placeholder2">
-                    <fragment android:id="@+id/placeholder2" />
-                </navigation>
-            </navigation>
-        </navigation>
-    </navigation>
+        android:id="@+id/recipeListFragment"
+        android:name="com.example.smartrecipe.ui.recipe.list.RecipeListFragment"
+        android:label="Công thức của tôi"
+        tools:layout="@layout/fragment_recipe_list">
+
+        <action
+            android:id="@+id/action_recipeList_to_recipeDetail"
+            app:destination="@id/recipeDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_recipeList_to_recipeEdit"
+            app:destination="@id/recipeEditFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
     <fragment
-        android:id="@+id/blankFragment2"
-        android:name="com.example.smartrecipe.BlankFragment2"
-        android:label="fragment_blank2"
-        tools:layout="@layout/fragment_blank2" />
-</resources>
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.example.smartrecipe.ui.recipe.detail.RecipeDetailFragment"
+        android:label="Chi tiết Công thức"
+        tools:layout="@layout/fragment_recipe_detail">
+
+        <argument
+            android:name="recipeId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+
+        <action
+            android:id="@+id/action_recipeDetail_to_cookingMode"
+            app:destination="@id/cookingModeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_recipeDetail_to_recipeEdit"
+            app:destination="@id/recipeEditFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeEditFragment"
+        android:name="com.example.smartrecipe.ui.recipe.edit.RecipeEditFragment"
+        android:label="Chỉnh sửa Công thức"
+        tools:layout="@layout/fragment_recipe_edit">
+
+        <argument
+            android:name="recipeId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cookingModeFragment"
+        android:name="com.example.smartrecipe.ui.recipe.cooking_mode.CookingModeFragment"
+        android:label="Đang nấu"
+        tools:layout="@layout/fragment_cooking_mode">
+
+        <argument
+            android:name="recipeId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/groceryListFragment"
+        android:name="com.example.smartrecipe.ui.grocery.list.GroceryListFragment"
+        android:label="Đi chợ"
+        tools:layout="@layout/fragment_grocery_list">
+
+        <action
+            android:id="@+id/action_groceryList_to_pantry"
+            app:destination="@id/pantryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pantryFragment"
+        android:name="com.example.smartrecipe.ui.grocery.pantry.PantryFragment"
+        android:label="Tủ lạnh của tôi"
+        tools:layout="@layout/fragment_pantry" />
+
+    <fragment
+        android:id="@+id/socialFeedFragment"
+        android:name="com.example.smartrecipe.ui.social.feed.SocialFeedFragment"
+        android:label="Cộng đồng"
+        tools:layout="@layout/fragment_social_feed" />
+
+</navigation>

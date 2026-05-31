@@ -5,12 +5,23 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.smartrecipe.data.local.entity.RecipeEntity
+import com.example.smartrecipe.data.local.entity.RecipeWithIngredients
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipeDao {
+
+    @Transaction
+    @Query("SELECT * FROM recipes ORDER BY recipeId DESC")
+    fun getAllRecipesWithIngredients(): Flow<List<RecipeWithIngredients>>
+
+    @Transaction
+    @Query("SELECT * FROM recipes WHERE recipeId = :id")
+    suspend fun getRecipeWithIngredientsById(id: Long): RecipeWithIngredients?
+
     @Query("SELECT * FROM recipes ORDER BY recipeId DESC")
     fun getAllRecipes(): Flow<List<RecipeEntity>>
 
