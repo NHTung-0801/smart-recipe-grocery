@@ -1,27 +1,38 @@
 package com.example.smartrecipe.data.mapper
 
+import com.example.smartrecipe.android_client.domain.model.Ingredient
 import com.example.smartrecipe.android_client.domain.model.Recipe
 import com.example.smartrecipe.data.local.entity.RecipeEntity
+import com.example.smartrecipe.data.local.entity.RecipeWithIngredients
 import javax.inject.Inject
 
 class RecipeMapper @Inject constructor() {
 
-    // Chuyển từ DB Entity sang Domain Model
-    fun mapToDomain(entity: RecipeEntity): Recipe {
+    // Nâng cấp: Nhận vào RecipeWithIngredients thay vì RecipeEntity đơn thuần
+    fun mapToDomain(relation: RecipeWithIngredients): Recipe {
         return Recipe(
-            id = entity.recipeId,
-            title = entity.title,
-            description = entity.description,
-            instructions = entity.instructions,
-            prepTime = entity.prepTime,
-            defaultServings = entity.defaultServings,
-            calories = entity.calories,
-            imageUrl = entity.imageUrl,
-            isSynced = entity.isSynced
+            id = relation.recipe.recipeId,
+            title = relation.recipe.title,
+            description = relation.recipe.description,
+            instructions = relation.recipe.instructions,
+            prepTime = relation.recipe.prepTime,
+            defaultServings = relation.recipe.defaultServings,
+            calories = relation.recipe.calories,
+            imageUrl = relation.recipe.imageUrl,
+            isSynced = relation.recipe.isSynced,
+            // Ánh xạ danh sách nguyên liệu
+            ingredients = relation.ingredients.map { entity ->
+                Ingredient(
+                    id = entity.ingredientId,
+                    name = entity.name,
+                    amount = entity.amount,
+                    unit = entity.unit
+                )
+            }
         )
     }
 
-    // Chuyển từ Domain Model xuống DB Entity để lưu
+    // Hàm map ngược để lưu (Giữ nguyên như cũ)
     fun mapToEntity(domain: Recipe): RecipeEntity {
         return RecipeEntity(
             recipeId = domain.id,

@@ -106,4 +106,10 @@
         android:label="Cộng đồng"
         tools:layout="@layout/fragment_social_feed" />
 
+    <fragment
+        android:id="@+id/nutritionFragment"
+        android:name="com.example.smartrecipe.ui.recipe.nutrition.NutritionFragment"
+        android:label="Dinh dưỡng"
+        tools:layout="@layout/fragment_nutrition" />
+
 </navigation>

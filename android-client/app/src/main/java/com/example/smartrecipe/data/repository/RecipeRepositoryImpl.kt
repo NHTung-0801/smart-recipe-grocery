@@ -14,15 +14,16 @@ class RecipeRepositoryImpl @Inject constructor(
 ) : IRecipeRepository {
 
     override fun getAllRecipes(): Flow<List<Recipe>> {
-        // Lấy danh sách Entity từ DB và map từng phần tử sang Domain Model
-        return recipeDao.getAllRecipes().map { entities ->
-            entities.map { mapper.mapToDomain(it) }
+        // Sử dụng hàm truy vấn có Transaction mới
+        return recipeDao.getAllRecipesWithIngredients().map { relations ->
+            relations.map { mapper.mapToDomain(it) }
         }
     }
 
     override suspend fun getRecipeById(id: Long): Recipe? {
-        val entity = recipeDao.getRecipeById(id)
-        return entity?.let { mapper.mapToDomain(it) }
+        // Sử dụng hàm truy vấn có Transaction mới
+        val relation = recipeDao.getRecipeWithIngredientsById(id)
+        return relation?.let { mapper.mapToDomain(it) }
     }
 
     override suspend fun saveRecipe(recipe: Recipe): Long {

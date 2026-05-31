@@ -13,15 +13,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecipeDao {
-
+    // Truy vấn lấy toàn bộ Công thức kèm danh sách Nguyên liệu
     @Transaction
     @Query("SELECT * FROM recipes ORDER BY recipeId DESC")
     fun getAllRecipesWithIngredients(): Flow<List<RecipeWithIngredients>>
 
+    // Truy vấn lấy 1 Công thức cụ thể kèm danh sách Nguyên liệu
     @Transaction
     @Query("SELECT * FROM recipes WHERE recipeId = :id")
     suspend fun getRecipeWithIngredientsById(id: Long): RecipeWithIngredients?
 
+    // Các hàm thêm/sửa/xóa bảng RecipeEntity
     @Query("SELECT * FROM recipes ORDER BY recipeId DESC")
     fun getAllRecipes(): Flow<List<RecipeEntity>>
 
