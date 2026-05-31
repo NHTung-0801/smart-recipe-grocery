@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/mainActivity">
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.smartrecipe.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.smartrecipe.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
+    <navigation android:id="@+id/navigation4"
+        app:startDestination="@id/navigation3">
+        <navigation
+            android:id="@+id/navigation3"
+            app:startDestination="@id/navigation2">
+            <navigation
+                android:id="@+id/navigation2"
+                app:startDestination="@id/navigation">
+                <navigation
+                    android:id="@+id/navigation"
+                    app:startDestination="@id/placeholder2">
+                    <fragment android:id="@+id/placeholder2" />
+                </navigation>
+            </navigation>
+        </navigation>
+    </navigation>
+    <fragment
+        android:id="@+id/blankFragment2"
+        android:name="com.example.smartrecipe.BlankFragment2"
+        android:label="fragment_blank2"
+        tools:layout="@layout/fragment_blank2" />
+</resources>
