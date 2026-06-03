@@ -41,10 +41,30 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
             findNavController().navigate(R.id.action_recipeDetail_to_recipeEdit, bundle)
         }
 
-        // Xử lý nút Bắt đầu nấu
+        // Xử lý nút Bắt đầu nấu (Đã gộp chung logic kiểm tra dữ liệu an toàn)
         binding.btnCookingMode.setOnClickListener {
-            val bundle = Bundle().apply { putLong("recipeId", currentRecipeId) }
-            findNavController().navigate(R.id.action_recipeDetail_to_cookingMode, bundle)
+            val currentRecipe = viewModel.recipe.value
+            if (currentRecipe != null) {
+                // Đóng gói ID món ăn và chuyển hướng sang CookingModeFragment
+                val bundle = Bundle().apply {
+                    putLong("recipeId", currentRecipe.id)
+                }
+                findNavController().navigate(R.id.action_recipeDetail_to_cookingMode, bundle)
+            } else {
+                Toast.makeText(requireContext(), "Dữ liệu chưa tải xong", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Luồng 2: Người dùng thiếu đồ -> Thêm vào danh sách Đi chợ
+        binding.btnAddGrocery.setOnClickListener {
+            val currentRecipe = viewModel.recipe.value
+            if (currentRecipe != null) {
+                // Gọi ViewModel để kích hoạt UseCase thuật toán
+                viewModel.addRecipeToGroceryList(currentRecipe)
+                Toast.makeText(requireContext(), "Đã thêm vào Danh sách đi chợ!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Dữ liệu chưa tải xong", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
