@@ -34,6 +34,7 @@ class RecipeListFragment : BaseFragment<FragmentRecipeListBinding>() {
         }
 
         // 2. Gắn Adapter vào RecyclerView
+        binding.recyclerViewRecipes.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
         binding.recyclerViewRecipes.adapter = recipeAdapter
 
         // 3. Xử lý nút Thêm mới

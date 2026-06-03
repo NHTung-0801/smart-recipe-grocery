@@ -41,7 +41,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
             findNavController().navigate(R.id.action_recipeDetail_to_recipeEdit, bundle)
         }
 
-        // Xử lý nút Bắt đầu nấu (Đã gộp chung logic kiểm tra dữ liệu an toàn)
+        // Xử lý nút Bắt đầu nấu
         binding.btnCookingMode.setOnClickListener {
             val currentRecipe = viewModel.recipe.value
             if (currentRecipe != null) {
@@ -60,8 +60,8 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
             val currentRecipe = viewModel.recipe.value
             if (currentRecipe != null) {
                 // Gọi ViewModel để kích hoạt UseCase thuật toán
+                // Lưu ý: Đã xóa Toast ở đây, Toast sẽ được gọi khi thực sự lưu xong
                 viewModel.addRecipeToGroceryList(currentRecipe)
-                Toast.makeText(requireContext(), "Đã thêm vào Danh sách đi chợ!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "Dữ liệu chưa tải xong", Toast.LENGTH_SHORT).show()
             }
@@ -71,13 +71,32 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.recipe.collect { recipe ->
-                    recipe?.let {
-                        // Cập nhật giao diện khi có dữ liệu
-                        binding.tvTitle.text = it.title
-                        binding.tvInfo.text = "⏱ ${it.prepTime} phút   •   🔥 ${it.calories} Calo"
+
+                // 1. Lắng nghe dữ liệu công thức để hiển thị lên giao diện
+                launch {
+                    viewModel.recipe.collect { recipe ->
+                        recipe?.let {
+                            // Cập nhật Tiêu đề và Thông tin
+                            binding.tvTitle.text = it.title
+                            binding.tvInfo.text = "⏱ ${it.prepTime} phút   •   🔥 ${it.calories} Calo"
+
+                            // Hiển thị danh sách nguyên liệu
+                            val ingredientsText = it.ingredients.joinToString(separator = "\n") { ing ->
+                                "• ${ing.name}: ${ing.amount} ${ing.unit}"
+                            }
+                            // Gán chuỗi nguyên liệu vào TextView (Đảm bảo ID tvIngredients có trong XML)
+                            binding.tvIngredients.text = ingredientsText
+                        }
                     }
                 }
+
+                // 2. Lắng nghe sự kiện thêm vào giỏ thành công
+                launch {
+                    viewModel.addToGrocerySuccess.collect {
+                        Toast.makeText(requireContext(), "Đã thêm vào Danh sách đi chợ!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             }
         }
     }

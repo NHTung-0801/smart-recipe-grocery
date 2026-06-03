@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/recipeListFragment"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Công thức" />
-
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Home" />
+    <item
+        android:id="@+id/socialFeedFragment"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="AI / Social" />
     <item
         android:id="@+id/groceryListFragment"
         android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Đi chợ" />
+        android:title="Grocery" />
     <item
         android:id="@+id/nutritionFragment"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Dinh dưỡng" />
-
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Profile" />
 </menu>

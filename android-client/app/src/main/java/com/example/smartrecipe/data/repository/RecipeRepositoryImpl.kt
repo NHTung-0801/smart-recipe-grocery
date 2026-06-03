@@ -30,8 +30,24 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveRecipe(recipe: Recipe): Long {
+        // 1. Lưu Recipe trước để lấy được recipeId (Khóa chính)
         val entity = mapper.mapToEntity(recipe)
-        return recipeDao.insertRecipe(entity)
+        val generatedRecipeId = recipeDao.insertRecipe(entity)
+
+        // 2. Lấy recipeId vừa sinh ra gán cho từng nguyên liệu rồi lưu xuống bảng Ingredients
+        if (recipe.ingredients.isNotEmpty()) {
+            val ingredientEntities = recipe.ingredients.map { ingredient ->
+                IngredientEntity(
+                    recipeId = generatedRecipeId, // Khóa ngoại liên kết với món ăn
+                    name = ingredient.name,
+                    amount = ingredient.amount,
+                    unit = ingredient.unit
+                )
+            }
+            recipeDao.insertIngredients(ingredientEntities)
+        }
+
+        return generatedRecipeId
     }
 
     override suspend fun deleteRecipe(recipe: Recipe) {

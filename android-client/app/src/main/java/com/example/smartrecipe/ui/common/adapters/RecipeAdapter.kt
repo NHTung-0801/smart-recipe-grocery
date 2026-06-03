@@ -33,8 +33,17 @@ class RecipeAdapter(
 
         fun bind(recipe: Recipe) {
             binding.tvRecipeTitle.text = recipe.title
-            // Gắn các thông số từ Domain Model lên giao diện
-            binding.tvRecipeInfo.text = "⏱ ${recipe.prepTime} phút  |  🔥 ${recipe.calories} Calo"
+
+            // Sử dụng tvAuthor (đã có trong file XML mới) để hiển thị thời gian và calo
+            binding.tvAuthor.text = "⏱ ${recipe.prepTime} phút  |  🔥 ${recipe.calories} Calo"
+
+            // (Tùy chọn) Gán sự kiện click cho nút "Nấu ngay" để nó cũng có tác dụng như click vào cả thẻ Card
+            binding.btnAction.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(getItem(position))
+                }
+            }
         }
     }
 

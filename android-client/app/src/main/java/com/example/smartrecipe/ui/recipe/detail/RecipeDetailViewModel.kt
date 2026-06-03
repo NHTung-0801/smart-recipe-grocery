@@ -6,8 +6,10 @@ import com.example.smartrecipe.android_client.domain.repository.IRecipeRepositor
 import com.example.smartrecipe.core.base.BaseViewModel
 import com.example.smartrecipe.domain.usecase.grocery.GenerateGroceryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +22,8 @@ class RecipeDetailViewModel @Inject constructor(
 
     private val _recipe = MutableStateFlow<Recipe?>(null)
     val recipe: StateFlow<Recipe?> = _recipe.asStateFlow()
+    private val _addToGrocerySuccess = MutableSharedFlow<Unit>()
+    val addToGrocerySuccess = _addToGrocerySuccess.asSharedFlow()
 
     fun loadRecipeDetails(id: Long) {
         viewModelScope.launch(exceptionHandler) {
@@ -28,12 +32,13 @@ class RecipeDetailViewModel @Inject constructor(
         }
     }
 
+
     fun addRecipeToGroceryList(recipe: Recipe) {
         viewModelScope.launch(exceptionHandler) {
-            // Thuật toán nhận vào 1 list các món ăn, ở đây ta truyền vào 1 list có 1 món hiện tại
+            // Chạy thuật toán lưu vào DB
             generateGroceryListUseCase(listOf(recipe))
-
-            // Bạn có thể dùng MutableSharedFlow để bắn ra thông báo Toast giống hệt bên màn hình Edit
+            // Chờ lưu xong mới bắn tín hiệu thành công
+            _addToGrocerySuccess.emit(Unit)
         }
     }
 }

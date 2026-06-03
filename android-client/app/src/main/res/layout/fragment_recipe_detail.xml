@@ -67,7 +67,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Nguyên liệu &amp; Các bước"
+                android:text="Nguyên liệu"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="6dp"
+                android:textColor="#424242"
+                android:textSize="16sp"
+                tools:text="• Thịt heo: 500 g\n• Trứng: 2 quả" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Các bước thực hiện"
                 android:textColor="#212121"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -77,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
-                android:text="(Phần chi tiết nguyên liệu và các bước làm sẽ được cập nhật đầy đủ thông qua Room Database)"
+                android:text="(Chưa có hướng dẫn chi tiết)"
                 android:textColor="#424242"
                 android:textSize="16sp" />
 

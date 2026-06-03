@@ -36,11 +36,6 @@ class GroceryFragment : BaseFragment<FragmentGroceryBinding>() {
             viewModel.clearCheckedItems()
         }
 
-        // Xử lý nút tạo dữ liệu Test
-        binding.btnMockData.setOnClickListener {
-            viewModel.generateMockData()
-        }
-
     }
 
     override fun observeData() {
