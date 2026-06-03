@@ -1,11 +1,15 @@
 package com.example.smartrecipe.android_client.domain.usecase.nutrition
 
 import com.example.smartrecipe.data.local.datastore.AppPreferences
+import com.example.smartrecipe.domain.model.ConsumedMacros
+import com.example.smartrecipe.domain.repository.IJournalRepository
 import kotlinx.coroutines.flow.Flow
+import java.util.Calendar
 import javax.inject.Inject
 
 class TrackDailyMacroUseCase @Inject constructor(
-    private val appPreferences: AppPreferences
+    private val appPreferences: AppPreferences,
+    private val journalRepository: IJournalRepository
 ) {
     // Lấy các mục tiêu đã thiết lập
     fun getDailyCalorieGoal(): Flow<Int> = appPreferences.dailyCalorieGoal
@@ -13,21 +17,24 @@ class TrackDailyMacroUseCase @Inject constructor(
     fun getDailyCarbsGoal(): Flow<Int> = appPreferences.dailyCarbsGoal
     fun getDailyFatGoal(): Flow<Int> = appPreferences.dailyFatGoal
 
-    // Dữ liệu mô phỏng lượng đã nạp vào hôm nay (Sẽ nối với Room DB ở Phase sau)
-    fun getConsumedMacrosToday(): ConsumedMacros {
-        return ConsumedMacros(
-            calories = 1450,
-            protein = 110,
-            carbs = 160,
-            fat = 45
-        )
+    // Lấy dữ liệu lượng đã nạp vào hôm nay từ Repository
+    fun getConsumedMacrosToday(): Flow<ConsumedMacros> {
+        val calendar = Calendar.getInstance()
+
+        // Thiết lập thời điểm bắt đầu ngày (00:00:00)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val startOfDay = calendar.timeInMillis
+
+        // Thiết lập thời điểm kết thúc ngày (23:59:59)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        val endOfDay = calendar.timeInMillis
+
+        return journalRepository.getDailyMacros(startOfDay, endOfDay)
     }
 }
-
-// Data class nhỏ để gói gọn dữ liệu trả về cho ViewModel
-data class ConsumedMacros(
-    val calories: Int,
-    val protein: Int,
-    val carbs: Int,
-    val fat: Int
-)

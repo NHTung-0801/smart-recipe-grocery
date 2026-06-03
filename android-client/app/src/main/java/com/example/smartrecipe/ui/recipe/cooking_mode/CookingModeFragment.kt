@@ -40,19 +40,32 @@ class CookingModeFragment : BaseFragment<FragmentCookingModeBinding>() {
             viewModel.loadRecipe(recipeId)
         }
 
+        // Chỉ gọi 1 lần: Gửi lệnh cho ViewModel xử lý việc lưu Nhật ký
+        // Việc thoát màn hình sẽ do observeData() đảm nhận khi ViewModel xử lý xong
         binding.btnDone.setOnClickListener {
-            // Khi nấu xong, quay về màn hình Chi tiết công thức
-            findNavController().popBackStack()
+            viewModel.finishCooking()
         }
     }
 
     override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
+            // Gộp chung vào một khối repeatOnLifecycle để quản lý vòng đời tối ưu hơn
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.recipe.collect { recipe ->
-                    recipe?.let {
-                        binding.tvCookingTitle.text = it.title
-                        binding.tvStep.text = "Hướng dẫn chi tiết:\n(Tạm thời hiển thị giao diện mẫu. Tính năng tách bóc từng bước nấu sẽ được tích hợp khi chúng ta xử lý Dữ liệu Nguyên liệu ở Phase 2)"
+
+                // Luồng 1: Lắng nghe và hiển thị thông tin món ăn
+                launch {
+                    viewModel.recipe.collect { recipe ->
+                        recipe?.let {
+                            binding.tvCookingTitle.text = it.title
+                            binding.tvStep.text = "Hướng dẫn chi tiết:\n(Tạm thời hiển thị giao diện mẫu. Tính năng tách bóc từng bước nấu sẽ được tích hợp khi chúng ta xử lý Dữ liệu Nguyên liệu ở Phase 2)"
+                        }
+                    }
+                }
+
+                // Luồng 2: Lắng nghe sự kiện hoàn thành để quay về màn hình trước đó
+                launch {
+                    viewModel.finishEvent.collect {
+                        findNavController().popBackStack()
                     }
                 }
             }

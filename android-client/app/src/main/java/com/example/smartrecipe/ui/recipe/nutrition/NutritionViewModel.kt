@@ -41,12 +41,15 @@ class NutritionViewModel @Inject constructor(
     }
 
     private fun loadNutritionData() {
-        // Lấy số liệu Macro mô phỏng của ngày hôm nay
-        val macros = trackDailyMacroUseCase.getConsumedMacrosToday()
-        _consumedCalories.value = macros.calories
-        _consumedProtein.value = macros.protein
-        _consumedCarbs.value = macros.carbs
-        _consumedFat.value = macros.fat
+        viewModelScope.launch(exceptionHandler) {
+            // Dữ liệu sẽ tự động chảy về đây mỗi khi Room DB có thay đổi
+            trackDailyMacroUseCase.getConsumedMacrosToday().collect { macros ->
+                _consumedCalories.value = macros.calories
+                _consumedProtein.value = macros.protein
+                _consumedCarbs.value = macros.carbs
+                _consumedFat.value = macros.fat
+            }
+        }
     }
 
     // Hàm cập nhật mục tiêu thông minh: Tính TDEE và tự động chia Macro chuẩn (30-40-30)

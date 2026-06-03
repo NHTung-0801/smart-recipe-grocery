@@ -81,9 +81,9 @@
 
     <fragment
         android:id="@+id/groceryListFragment"
-        android:name="com.example.smartrecipe.ui.grocery.list.GroceryListFragment"
+        android:name="com.example.smartrecipe.ui.grocery.list.GroceryFragment"
         android:label="Đi chợ"
-        tools:layout="@layout/fragment_grocery_list">
+        tools:layout="@layout/fragment_grocery">
 
         <action
             android:id="@+id/action_groceryList_to_pantry"
