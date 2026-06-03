@@ -6,7 +6,9 @@ import com.example.smartrecipe.data.local.dao.GroceryDao
 import com.example.smartrecipe.data.local.dao.JournalDao
 import com.example.smartrecipe.data.local.dao.RecipeDao
 import com.example.smartrecipe.data.local.dao.SocialDao
+import com.example.smartrecipe.data.local.entity.GroceryEntity
 import com.example.smartrecipe.data.local.entity.IngredientEntity
+import com.example.smartrecipe.data.local.entity.JournalEntity
 import com.example.smartrecipe.data.local.entity.RecipeEntity
 import com.example.smartrecipe.data.local.entity.TagEntity
 
@@ -14,9 +16,11 @@ import com.example.smartrecipe.data.local.entity.TagEntity
     entities = [
         RecipeEntity::class,
         IngredientEntity::class,
-        TagEntity::class
+        TagEntity::class,
+        JournalEntity::class,
+        GroceryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -24,4 +28,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groceryDao(): GroceryDao
     abstract fun journalDao(): JournalDao
     abstract fun socialDao(): SocialDao
+
+
 }

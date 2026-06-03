@@ -15,25 +15,29 @@ class AppPreferences @Inject constructor(
     companion object {
         val JWT_TOKEN = stringPreferencesKey("jwt_token")
         val DAILY_CALORIE_GOAL = intPreferencesKey("daily_calorie_goal")
+        // Thêm các Key mới cho Macro
+        val DAILY_PROTEIN_GOAL = intPreferencesKey("daily_protein_goal")
+        val DAILY_CARBS_GOAL = intPreferencesKey("daily_carbs_goal")
+        val DAILY_FAT_GOAL = intPreferencesKey("daily_fat_goal")
     }
 
     val jwtToken: Flow<String?> = dataStore.data.map { preferences ->
         preferences[JWT_TOKEN]
     }
 
-    suspend fun saveJwtToken(token: String) {
-        dataStore.edit { preferences ->
-            preferences[JWT_TOKEN] = token
-        }
-    }
+    // Đọc dữ liệu Macro (Thiết lập giá trị mặc định cho một người trưởng thành)
+    val dailyCalorieGoal: Flow<Int> = dataStore.data.map { it[DAILY_CALORIE_GOAL] ?: 2000 }
+    val dailyProteinGoal: Flow<Int> = dataStore.data.map { it[DAILY_PROTEIN_GOAL] ?: 150 } // 150g Protein
+    val dailyCarbsGoal: Flow<Int> = dataStore.data.map { it[DAILY_CARBS_GOAL] ?: 200 }   // 200g Carbs
+    val dailyFatGoal: Flow<Int> = dataStore.data.map { it[DAILY_FAT_GOAL] ?: 65 }        // 65g Fat
 
-    val dailyCalorieGoal: Flow<Int> = dataStore.data.map { preferences ->
-        preferences[DAILY_CALORIE_GOAL] ?: 2000 // Mặc định 2000 Calo/ngày
-    }
-
-    suspend fun saveDailyCalorieGoal(calories: Int) {
+    // Gộp chung vào 1 hàm lưu để tối ưu hóa hiệu năng ghi file
+    suspend fun saveNutritionGoals(calories: Int, protein: Int, carbs: Int, fat: Int) {
         dataStore.edit { preferences ->
             preferences[DAILY_CALORIE_GOAL] = calories
+            preferences[DAILY_PROTEIN_GOAL] = protein
+            preferences[DAILY_CARBS_GOAL] = carbs
+            preferences[DAILY_FAT_GOAL] = fat
         }
     }
 }

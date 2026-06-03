@@ -1,4 +1,9 @@
-package com.example.smartrecipe.android_client.domain.model
+package com.example.smartrecipe.domain.model
 
-class GroceryItem {
-}
+data class GroceryItem(
+    val id: Long = 0,
+    val name: String,
+    val amount: Double,
+    val unit: String,
+    val isChecked: Boolean = false
+)
