@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="8dp"
+    android:weightSum="10"
+    android:gravity="center_vertical">
+
+    <EditText
+        android:id="@+id/etIngName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:hint="Tên (vd: Thịt heo)"
+        android:inputType="text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etIngAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="SL (vd: 500)"
+        android:inputType="numberDecimal"
+        android:textSize="14sp"
+        android:layout_marginStart="4dp" />
+
+    <EditText
+        android:id="@+id/etIngUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="Đơn vị (vd: g)"
+        android:inputType="text"
+        android:textSize="14sp"
+        android:layout_marginStart="4dp" />
+
+    <ImageButton
+        android:id="@+id/btnRemove"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="#F44336" />
+</LinearLayout>
